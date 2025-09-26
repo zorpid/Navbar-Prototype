@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <title>Navbar Prototyper – Single Page (10 teman)</title>
+    <style>
+        :root {
+            --brand: #2f9e44;
+            /* emerald-ish */
+            --brand-2: #6bc86f;
+            /* lighter brand */
+            --bg: #f6fbf8;
+            --text: #0f172a;
+            --muted: #4b5563;
+            --surface: #ffffff;
+            --ring: rgba(16, 185, 129, 0.25);
+            --side-bg: #e8f6ed;
+            --side-border: #cfe8d7;
+            --hero-gradient: linear-gradient(180deg, rgba(0, 0, 0, .35), rgba(0, 0, 0, .2));
+
+            /* nav defaults (overridden per theme) */
+            --nav-bg: rgba(255, 255, 255, .95);
+            --nav-border: #e5e7eb;
+            --nav-link: #374151;
+            --nav-link-active: var(--brand);
+            --nav-link-hover: var(--brand);
+            --cta-bg: var(--brand);
+            --cta-text: #fff;
+            --nav-radius: 0px;
+            --nav-shadow: none;
+            --nav-height: 64px;
+            --nav-accent: var(--brand);
+            --nav-underline-thickness: 2px;
+        }
+
+        /* THEME 1: Underline (default) */
+        body.theme-underline {}
+
+        /* THEME 2: Classic Solid */
+        body.theme-classic {
+            --nav-bg: var(--brand);
+            --nav-border: transparent;
+            --nav-link: rgba(255, 255, 255, .9);
+            --nav-link-active: #fff;
+            --nav-link-hover: #fff;
+            --cta-bg: #fff;
+            --cta-text: var(--brand);
+        }
+
+        /* THEME 3: Glassmorphism (mörk glas för läsbarhet) */
+        body.theme-glass {
+            --nav-bg: rgba(15, 23, 42, .45);
+            --nav-border: rgba(255, 255, 255, .12);
+            --nav-link: #f8fafc;
+            --nav-link-active: #ffffff;
+            --nav-link-hover: #ffffff;
+            --cta-bg: rgba(255, 255, 255, .92);
+            --cta-text: #0f172a;
+            --nav-radius: 16px;
+            --nav-shadow: 0 10px 28px rgba(2, 6, 23, .18);
+        }
+
+        /* THEME 4: Gradient Bar */
+        body.theme-gradient {
+            --nav-bg: linear-gradient(90deg, #2f9e44, #3fbf7a, #2f9e44);
+            --nav-border: transparent;
+            --nav-link: rgba(255, 255, 255, .95);
+            --nav-link-active: #ffffff;
+            --nav-link-hover: #ffffff;
+            --cta-bg: #ffffff;
+            --cta-text: #166534;
+            --nav-shadow: 0 1px 0 rgba(255, 255, 255, .15) inset;
+            --nav-accent: #ffffff;
+            /* underlines i vitt för kontrast */
+        }
+
+        /* THEME 5: Elevated (floating) */
+        body.theme-elevated {
+            --nav-bg: #ffffff;
+            --nav-border: rgba(15, 23, 42, .06);
+            --nav-link: #0f172a;
+            --nav-link-active: #111827;
+            --nav-link-hover: var(--brand);
+            --cta-bg: var(--brand);
+            --cta-text: #fff;
+            --nav-radius: 16px;
+            --nav-shadow: 0 10px 30px rgba(2, 6, 23, .08);
+        }
+
+        /* THEME 6: Outline Tabs (pill) */
+        body.theme-outline {
+            --nav-bg: #ffffff;
+            --nav-border: #e5e7eb;
+            --nav-link: #111827;
+            --nav-link-active: #0f172a;
+            --nav-link-hover: #0f172a;
+            --cta-bg: var(--brand);
+            --cta-text: #fff;
+        }
+
+        /* THEME 7: Inverted (dark) */
+        body.theme-inverted {
+            --nav-bg: #0b1324;
+            --nav-border: #111827;
+            --nav-link: #cbd5e1;
+            --nav-link-active: #e5e7eb;
+            --nav-link-hover: #ffffff;
+            --cta-bg: #22c55e;
+            --cta-text: #052e16;
+        }
+
+        /* THEME 8: Minimal (borderless + underlines on hover) */
+        body.theme-minimal {
+            --nav-bg: #ffffff;
+            --nav-border: transparent;
+            --nav-link: #111827;
+            --nav-link-hover: #0f172a;
+            --nav-link-active: var(--brand);
+            --nav-underline-thickness: 1px;
+        }
+
+        /* THEME 9: Compact (shorter height + utility row) */
+        body.theme-compact {
+            --nav-bg: #ffffff;
+            --nav-border: #e5e7eb;
+            --nav-link: #374151;
+            --nav-link-hover: #0f172a;
+            --nav-height: 56px;
+        }
+
+        /* THEME 10: Bottom (mobile-first bottom nav) */
+        body.theme-bottom {
+            --nav-bg: #ffffff;
+            --nav-border: #e5e7eb;
+            --nav-link: #374151;
+            --nav-link-hover: var(--brand);
+        }
+
+        /* Base reset */
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        .brand__logo-img {
+            width: 40px;
+            /* samma storlek som gamla loggan */
+            height: 40px;
+            object-fit: contain;
+            /* ser till att bilden inte blir utdragen */
+            border-radius: 12px;
+            /* behåll rundade hörn om du vill */
+        }
+
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Top info bar */
+        .top-info {
+            background: repeating-linear-gradient(45deg, #dff3e6, #dff3e6 8px, #d2ecd9 8px, #d2ecd9 16px);
+            color: #0b3d2e;
+            font-size: 12px;
+            letter-spacing: .2px;
+            padding: 6px 16px;
+            text-align: right;
+        }
+
+        /* NAVBAR */
+        .nav-host {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+        }
+
+        .nav {
+            background: var(--nav-bg);
+            backdrop-filter: blur(8px) saturate(160%);
+            border-bottom: 1px solid var(--nav-border);
+            border-radius: var(--nav-radius);
+            box-shadow: var(--nav-shadow);
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav__wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            letter-spacing: .2px;
+        }
+
+        .brand__logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: radial-gradient(circle at 30% 30%, var(--brand-2), var(--brand));
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+        }
+
+        .nav__links {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            margin-left: auto;
+            flex-wrap: wrap;
+        }
+
+        .nav__link {
+            position: relative;
+            padding: 8px 2px;
+            color: var(--nav-link);
+            font-weight: 500;
+            line-height: 1;
+            border-radius: 10px;
+        }
+
+        .nav__link:hover {
+            color: var(--nav-link-hover);
+        }
+
+        /* underline indicator for underline/minimal/gradient */
+        body.theme-underline .nav__link--underline::after,
+        body.theme-minimal .nav__link--underline::after,
+        body.theme-gradient .nav__link--underline::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -8px;
+            height: var(--nav-underline-thickness);
+            background: transparent;
+            transition: background .2s, transform .2s;
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        body.theme-underline .nav__link--underline:hover::after,
+        body.theme-underline .nav__link--underline.is-active::after,
+        body.theme-minimal .nav__link--underline:hover::after,
+        body.theme-minimal .nav__link--underline.is-active::after,
+        body.theme-gradient .nav__link--underline:hover::after,
+        body.theme-gradient .nav__link--underline.is-active::after {
+            background: var(--nav-accent);
+            transform: scaleX(1);
+        }
+
+        /* active state color */
+        .nav__link.is-active {
+            color: var(--nav-link-active);
+        }
+
+        .nav__cta {
+            display: flex;
+            /* centrera ikonen */
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            /* kvadratisk knapp */
+            height: 40px;
+            border-radius: 999px;
+            background: var(--cta-bg);
+            color: var(--cta-text);
+        }
+
+        .nav__cta svg {
+            width: 20px;
+            height: 20px;
+        }
+
+
+        .nav__cta:focus {
+            outline: 3px solid var(--ring);
+            outline-offset: 2px;
+        }
+
+        /* Outline tabs styling (Theme 6) */
+        body.theme-outline .nav__link {
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        body.theme-outline .nav__link:hover {
+            background: #f9fafb;
+        }
+
+        body.theme-outline .nav__link.is-active {
+            background: #ecfdf5;
+            border-color: #bbf7d0;
+        }
+
+        /* Inverted tweaks (Theme 7) */
+        body.theme-inverted .brand__logo {
+            box-shadow: none;
+        }
+
+        body.theme-inverted .nav__cta {
+            background: #22c55e;
+            color: #052e16;
+        }
+
+        /* Compact (Theme 9) */
+        body.theme-compact .brand__logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+        }
+
+        body.theme-compact .nav__wrap {
+            padding: 6px 12px;
+        }
+
+        /* Bottom nav (Theme 10) */
+        .bottom-nav {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nav-bg);
+            border-top: 1px solid var(--nav-border);
+            display: none;
+            z-index: 50;
+        }
+
+        .bottom-nav__wrap {
+            max-width: 640px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 6px;
+            padding-bottom: calc(8px + env(safe-area-inset-bottom));
+        }
+
+        .bottom-nav a {
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--nav-link);
+            padding: 6px 8px;
+            border-radius: 10px;
+        }
+
+        .bottom-nav a.is-active,
+        .bottom-nav a:hover {
+            color: var(--nav-link-hover);
+        }
+
+        /* Mobile menu */
+        .burger {
+            display: none;
+            border: none;
+            background: transparent;
+            padding: 8px;
+            margin-left: auto;
+            color: var(--nav-link);
+        }
+
+        .burger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: currentColor;
+            margin: 5px 0;
+            transition: transform .2s;
+        }
+
+        .mobile-menu {
+            display: none;
+            border-top: 1px solid var(--nav-border);
+            background: var(--nav-bg);
+            width: 100%;
+        }
+
+        .mobile-menu a {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            min-height: 44px;
+        }
+
+        /* Layout: left side menu + content */
+        .layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 24px;
+        }
+
+        .side {
+            position: sticky;
+            top: 100px;
+            align-self: start;
+            background: var(--side-bg);
+            border: 1px solid var(--side-border);
+            border-radius: 16px;
+            padding: 12px;
+        }
+
+        .side h4 {
+            margin: 8px 10px 6px;
+            font-size: 13px;
+            color: #065f46;
+            letter-spacing: .4px;
+            text-transform: uppercase;
+        }
+
+        .side a {
+            display: block;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: #14532d;
+            font-weight: 500;
+        }
+
+        .side a:hover {
+            background: #ffffffaa;
+        }
+
+        .side .is-active {
+            background: #fff;
+            box-shadow: 0 1px 0 var(--side-border) inset;
+        }
+
+        /* Content cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .card__hero {
+            height: 340px;
+            background: var(--hero-gradient), url('https://images.unsplash.com/photo-1496483648148-47c686dc86a8?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+        }
+
+        .card__body {
+            padding: 24px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: var(--brand);
+            color: #fff;
+        }
+
+        /* Sections */
+        section {
+            scroll-margin-top: 96px;
+        }
+
+        /* Theme switcher tray */
+        .switcher {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            display: flex;
+            gap: 8px;
+            background: #ffffffcc;
+            border: 1px solid #e5e7eb;
+            padding: 8px;
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            flex-wrap: wrap;
+        }
+
+        .switcher button {
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            padding: 8px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .switcher button[aria-pressed="true"] {
+            outline: 2px solid var(--brand);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 220px 1fr;
+            }
+
+            .card__hero {
+                height: 280px;
+            }
+        }
+
+        /* RESPONSIVE (ersätt ditt befintliga 768px-block med detta) */
+        @media (max-width: 768px) {
+            .nav {
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                /* <— viktigt */
+            }
+
+            .nav__links {
+                display: none;
+            }
+
+            .burger {
+                display: block;
+            }
+
+            .mobile-menu {
+                display: none;
+                position: static;
+                width: 100%;
+            }
+
+            .mobile-menu.show {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        /* ===== FÄRGSCHEMAN (Original, Grön, Vit, Grå) ===== */
+        /* Token-lager för schema som mappas vidare till nav-variablerna */
+        body {
+            --scheme-nav-bg: var(--nav-bg);
+            --scheme-nav-link: var(--nav-link);
+            --scheme-nav-link-hover: var(--nav-link-hover);
+            --scheme-nav-link-active: var(--nav-link-active);
+            --scheme-cta-bg: var(--cta-bg);
+            --scheme-cta-text: var(--cta-text);
+        }
+
+        /* Bas: låt nav-variabler peka på schema-tokens  */
+        body[data-scheme] {
+            --nav-bg: var(--scheme-nav-bg);
+            --nav-link: var(--scheme-nav-link);
+            --nav-link-hover: var(--scheme-nav-link-hover);
+            --nav-link-active: var(--scheme-nav-link-active);
+            --cta-bg: var(--scheme-cta-bg);
+            --cta-text: var(--scheme-cta-text);
+        }
+
+        /* SCHEMAN */
+        body[data-scheme="original"] {
+            --scheme-nav-bg: rgba(255, 255, 255, .95);
+            --scheme-nav-link: #374151;
+            --scheme-nav-link-hover: var(--brand);
+            --scheme-nav-link-active: var(--brand);
+            --scheme-cta-bg: var(--brand);
+            --scheme-cta-text: #fff;
+            --brand: #2f9e44;
+            --brand-2: #6bc86f;
+            --grad-accent: var(--brand);
+        }
+
+        body[data-scheme="green"] {
+            --scheme-nav-bg: #2f9e44;
+            --scheme-nav-link: rgba(255, 255, 255, .9);
+            --scheme-nav-link-hover: #ffffff;
+            --scheme-nav-link-active: #ffffff;
+            --scheme-cta-bg: #ffffff;
+            --scheme-cta-text: #166534;
+            --brand: #2f9e44;
+            --brand-2: #7bcf81;
+            --grad-accent: #2f9e44;
+        }
+
+        body[data-scheme="white"] {
+            --scheme-nav-bg: #ffffff;
+            --scheme-nav-link: #0f172a;
+            --scheme-nav-link-hover: #0f172a;
+            --scheme-nav-link-active: #2f9e44;
+            --scheme-cta-bg: #2f9e44;
+            --scheme-cta-text: #ffffff;
+            --brand: #2f9e44;
+            --brand-2: #6bc86f;
+            --grad-accent: #0f172a;
+            /* mörk textblå som accent */
+        }
+
+        body[data-scheme="gray"] {
+            --scheme-nav-bg: #f3f4f6;
+            --scheme-nav-link: #111827;
+            --scheme-nav-link-hover: #0f172a;
+            --scheme-nav-link-active: #2f9e44;
+            --scheme-cta-bg: #2f9e44;
+            --scheme-cta-text: #ffffff;
+            --brand: #2f9e44;
+            --brand-2: #6bc86f;
+            --grad-accent: #6b7280;
+            /* gray-500 som accent */
+        }
+
+        body[data-scheme="lightgray"] {
+            --scheme-nav-bg: #f9fafb;
+            --scheme-nav-link: #111827;
+            --scheme-nav-link-hover: #0f172a;
+            --scheme-nav-link-active: #2f9e44;
+            --scheme-cta-bg: #2f9e44;
+            --scheme-cta-text: #ffffff;
+            --brand: #2f9e44;
+            --brand-2: #6bc86f;
+            --grad-accent: #9ca3af;
+        }
+
+        body[data-scheme="midgray"] {
+            --scheme-nav-bg: #d1d5db;
+            --scheme-nav-link: #111827;
+            --scheme-nav-link-hover: #0f172a;
+            --scheme-nav-link-active: #2f9e44;
+            --scheme-cta-bg: #2f9e44;
+            --scheme-cta-text: #ffffff;
+            --brand: #2f9e44;
+            --brand-2: #6bc86f;
+            --grad-accent: #6b7280;
+        }
+
+        body[data-scheme="darkgray"] {
+            --scheme-nav-bg: #374151;
+            --scheme-nav-link: #f9fafb;
+            --scheme-nav-link-hover: #22c55e;
+            --scheme-nav-link-active: #22c55e;
+            --scheme-cta-bg: #22c55e;
+            --scheme-cta-text: #000000;
+            --brand: #22c55e;
+            --brand-2: #4ade80;
+            --grad-accent: #374151;
+        }
+
+        body[data-scheme="lightgreen"] {
+            --scheme-nav-bg: #bbf7d0;
+            --scheme-nav-link: #064e3b;
+            --scheme-nav-link-hover: #065f46;
+            --scheme-nav-link-active: #065f46;
+            --scheme-cta-bg: #065f46;
+            --scheme-cta-text: #ffffff;
+            --brand: #22c55e;
+            --brand-2: #86efac;
+            --grad-accent: #22c55e;
+        }
+
+        body[data-scheme="darkgreen"] {
+            --scheme-nav-bg: #065f46;
+            --scheme-nav-link: #ecfdf5;
+            --scheme-nav-link-hover: #ffffff;
+            --scheme-nav-link-active: #ffffff;
+            --scheme-cta-bg: #22c55e;
+            --scheme-cta-text: #052e16;
+            --brand: #065f46;
+            --brand-2: #16a34a;
+            --grad-accent: #065f46;
+        }
+
+
+
+        /* Gör så här: följ schemat för de ljusa temana */
+        body.theme-underline[data-scheme],
+        body.theme-minimal[data-scheme],
+        body.theme-elevated[data-scheme],
+        body.theme-outline[data-scheme],
+        body.theme-compact[data-scheme],
+        body.theme-classic[data-scheme],
+        body.theme-bottom[data-scheme] {
+            --nav-bg: var(--scheme-nav-bg);
+            --nav-link: var(--scheme-nav-link);
+            --nav-link-hover: var(--scheme-nav-link-hover);
+            --nav-link-active: var(--scheme-nav-link-active);
+            --cta-bg: var(--scheme-cta-bg);
+            --cta-text: var(--scheme-cta-text);
+        }
+
+        /* Gradient bygger på --brand så schemat påverkar gradienten snyggt */
+        body.theme-gradient[data-scheme] {
+            --nav-bg: linear-gradient(90deg,
+                    var(--grad-accent) 0%,
+                    color-mix(in oklab, var(--grad-accent), #ffffff 40%) 60%,
+                    #ffffff 100%);
+            --nav-link: rgba(255, 255, 255, .95);
+            --nav-link-hover: #ffffff;
+            --nav-link-active: #ffffff;
+            --cta-bg: #ffffff;
+            --cta-text: #166534;
+            --nav-accent: #ffffff;
+        }
+
+        /* Glass & Inverted behåller sin kontrast (ignorera schema för bg) */
+        body.theme-glass[data-scheme],
+        body.theme-inverted[data-scheme] {
+            --nav-link: var(--scheme-nav-link);
+            --nav-link-hover: var(--scheme-nav-link-hover);
+            --nav-link-active: var(--scheme-nav-link-active);
+            --cta-bg: var(--scheme-cta-bg);
+            --cta-text: var(--scheme-cta-text);
+        }
+
+        /* Palett-UI */
+        .palette {
+            position: fixed;
+            left: 16px;
+            bottom: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            /* <— gör så att de bryts till flera rader */
+            gap: 10px;
+            max-width: 200px;
+            /* ungefär 5 × 28px + gap */
+            background: #ffffffcc;
+            border: 1px solid #e5e7eb;
+            padding: 8px 10px;
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+        }
+
+
+        .swatch {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+        }
+
+        .swatch[aria-pressed="true"] {
+            outline: 2px solid var(--brand);
+            outline-offset: 2px;
+        }
+
+        .swatch--original {
+            background: #ffffff;
+            box-shadow: inset 0 0 0 12px #000d03;
+        }
+
+        .swatch--green {
+            background: #2f9e44;
+        }
+
+        .swatch--white {
+            background: #ffffff;
+        }
+
+        .swatch--gray {
+            background: #f3f4f6;
+        }
+
+        .swatch--lightgray {
+            background: #f9fafb;
+            /* väldigt ljusgrå (nästan vit) */
+        }
+
+        .swatch--midgray {
+            background: #d1d5db;
+            /* mellan-grå */
+        }
+
+        .swatch--darkgray {
+            background: #374151;
+            /* mörkgrå / slate */
+        }
+
+        .swatch--lightgreen {
+            background: #bbf7d0;
+            /* tailwind green-200, ljusgrön */
+        }
+
+        .swatch--darkgreen {
+            background: #065f46;
+            /* djup mörkgrön */
+        }
+
+
+
+
+        /* Öka glas-opacitet vid scroll för bättre läsbarhet */
+        body.scrolled.theme-glass {
+            --nav-bg: rgba(15, 23, 42, .65);
+        }
+    </style>
+</head>
+
+<body class="theme-underline">
+    <div class="top-info">Fri frakt i Sverige under 500 kr • Svenska / SEK / inkl moms</div>
+
+    <!-- NAVBAR HOST -->
+    <div class="nav-host">
+        <nav class="nav" role="navigation" aria-label="Huvudnavigation">
+            <div class="nav__wrap">
+                <div class="brand">
+                    <img src="Endlessgreen.png" alt="Endless Green Solutions" class="brand__logo-img">
+                    <span>Endless Green Solutions</span>
+                </div>
+
+                <!-- Desktop links -->
+                <div class="nav__links" id="navLinks">
+                    <a class="nav__link nav__link--underline" href="#hem">Hem</a>
+                    <a class="nav__link nav__link--underline" href="#produkter">Produkter</a>
+                    <a class="nav__link nav__link--underline" href="#om-oss">Om oss</a>
+                    <a class="nav__link nav__link--underline" href="#sponsorer">Sponsorer</a>
+                    <a class="nav__link nav__link--underline" href="#leverans">Leverans</a>
+                    <a class="nav__link nav__link--underline" href="#kontakt">Kontakt</a>
+                    <a class="nav__cta" href="#kundvagn" aria-label="Kundvagn">
+  <i class="fas fa-shopping-cart"></i>
+</a>
+
+                </div>
+
+                <!-- Burger for mobile -->
+                <button class="burger" id="burger" aria-expanded="false" aria-controls="mobileMenu"
+                    aria-label="Öppna meny">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+            <div id="mobileMenu" class="mobile-menu">
+                <a href="#hem">Hem</a>
+                <a href="#produkter">Produkter</a>
+                <a href="#om-oss">Om oss</a>
+                <a href="#sponsorer">Sponsorer</a>
+                <a href="#leverans">Leverans</a>
+                <a href="#kontakt">Kontakt</a>
+                <a href="#produkter" class="btn" style="margin: 8px 16px 16px; text-align:center;">Till shoppen</a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- BOTTOM NAV (Theme 10) -->
+    <nav class="bottom-nav" aria-label="Bottennavigation">
+        <div class="bottom-nav__wrap">
+            <a href="#hem">Hem</a>
+            <a href="#produkter">Produkter</a>
+            <a href="#om-oss">Om oss</a>
+            <a href="#kontakt">Kontakt</a>
+        </div>
+    </nav>
+
+    <!-- LAYOUT: side menu + content -->
+    <main class="layout">
+        <aside class="side" aria-label="Sidomeny">
+            <h4>Meny</h4>
+            <a href="#hem" class="is-active">Hem</a>
+            <a href="#produkter">Produkter – Översikt</a>
+            <a href="#om-oss">Om oss</a>
+            <a href="#kontakt">Kontaktformulär</a>
+            <a href="#sponsorer">Sponsorer</a>
+            <a href="#leverans">Leverans</a>
+            <a href="#stadgar">Stadgar</a>
+        </aside>
+
+        <div class="content">
+            <section id="hem" class="card">
+                <div class="card__hero"></div>
+                <div class="card__body">
+                    <h1 style="margin:0 0 8px">Tracking the elements of nature</h1>
+                    <p style="color:var(--muted); max-width:65ch">Behåll bildstrukturen från nuvarande sida men med
+                        fräschare färger. Här kan vi lägga en hero med CTA som pekar till vår Omnitrack-butik eller
+                        produktlistor.</p>
+                    <p><a class="btn" href="#produkter">Omnitrack shop ↗</a></p>
+                </div>
+            </section>
+
+            <section id="produkter" class="card" style="margin-top:24px">
+                <div class="card__body">
+                    <h2>Produkter</h2>
+                    <p style="color:var(--muted)">Exempel-länkar/brickor — klick i navbaren scrollar hit. Lägg in grid
+                        av produkter eller kort.</p>
+                </div>
+            </section>
+
+            <section id="om-oss" class="card" style="margin-top:24px">
+                <div class="card__body">
+                    <h2>Om oss</h2>
+                    <p style="color:var(--muted)">Kort text om företaget. Den här sektionen hjälper klienten känna igen
+                        tonen från original.</p>
+                </div>
+            </section>
+
+            <section id="sponsorer" class="card" style="margin-top:24px">
+                <div class="card__body">
+                    <h2>Sponsorer</h2>
+                    <p style="color:var(--muted)">Listning av samarbeten/sponsorer.</p>
+                </div>
+            </section>
+
+            <section id="leverans" class="card" style="margin-top:24px">
+                <div class="card__body">
+                    <h2>Leverans</h2>
+                    <p style="color:var(--muted)">Information om leveransvillkor.</p>
+                </div>
+            </section>
+
+            <section id="kontakt" class="card" style="margin-top:24px">
+                <div class="card__body">
+                    <h2>Kontakt</h2>
+                    <form style="display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:720px">
+                        <label> Namn
+                            <input type="text"
+                                style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d1d5db" />
+                        </label>
+                        <label> E‑post
+                            <input type="email"
+                                style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d1d5db" />
+                        </label>
+                        <label style="grid-column:1 / -1"> Meddelande
+                            <textarea rows="4"
+                                style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d1d5db"></textarea>
+                        </label>
+                        <button class="btn" type="button" style="grid-column:1 / -1; width:max-content">Skicka</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="stadgar" class="card" style="margin:24px 0 80px">
+                <div class="card__body">
+                    <h2>Stadgar</h2>
+                    <p style="color:var(--muted)">Eventuellt innehåll kopplat till föreningens stadgar.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- THEME SWITCHER (10 navbar-prototyper) -->
+    <div class="switcher" role="group" aria-label="Välj navbar‑prototyp">
+        <button data-theme="underline" aria-pressed="true">1. Underline</button>
+        <button data-theme="classic">2. Classic</button>
+        <button data-theme="glass">3. Glass</button>
+        <button data-theme="gradient">4. Gradient</button>
+        <button data-theme="elevated">5. Elevated</button>
+        <button data-theme="outline">6. Outline</button>
+        <button data-theme="inverted">7. Inverted</button>
+        <button data-theme="minimal">8. Minimal</button>
+        <button data-theme="compact">9. Compact</button>
+        <button data-theme="bottom">10. Bottom (mobil)</button>
+    </div>
+    <!-- Färgpalett UI -->
+    <div class="palette" role="group" aria-label="Välj färgschema">
+        <button class="swatch swatch--original" data-scheme="original" aria-pressed="true" title="Original">1</button>
+        <button class="swatch swatch--green" data-scheme="green" aria-pressed="false" title="Grön">2</button>
+        <button class="swatch swatch--white" data-scheme="white" aria-pressed="false" title="Vit">3</button>
+        <button class="swatch swatch--gray" data-scheme="gray" aria-pressed="false" title="Grå">4</button>
+        <button class="swatch swatch--lightgray" data-scheme="lightgray" aria-pressed="false" title="Ljusgrå">5</button>
+        <button class="swatch swatch--midgray" data-scheme="midgray" aria-pressed="false" title="Mellangrå">6</button>
+        <button class="swatch swatch--darkgray" data-scheme="darkgray" aria-pressed="false" title="Mörkgrå">7</button>
+        <button class="swatch swatch--lightgreen" data-scheme="lightgreen" aria-pressed="false"
+            title="Ljusgrön">8</button>
+        <button class="swatch swatch--darkgreen" data-scheme="darkgreen" aria-pressed="false"
+            title="Mörkgrön">9</button>
+
+
+    </div>
+
+
+    <script>
+        (() => {
+            'use strict';
+            if (window.__navbarsInit) return; // Skydda mot dubbelinitiering
+            window.__navbarsInit = true;
+
+            // Theme switching
+            const switcher = document.querySelector('.switcher');
+            const themeButtons = switcher ? switcher.querySelectorAll('button') : [];
+            if (switcher) {
+                switcher.addEventListener('click', (e) => {
+                    const btn = e.target.closest('button');
+                    if (!btn) return;
+                    const theme = btn.dataset.theme;
+                    document.body.className = 'theme-' + theme + (document.body.classList.contains('scrolled') ? ' scrolled' : '');
+                    themeButtons.forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+                    syncUnderlineClass();
+                    syncBottomActive();
+                });
+            }
+
+            // === FÄRGSCHEMA ===
+            const SCHEME_KEY = 'navbar-scheme';
+
+            // 1) Restore från localStorage eller default till "original"
+            const savedScheme = localStorage.getItem(SCHEME_KEY) || 'original';
+            document.body.dataset.scheme = savedScheme;
+
+            // 2) Uppdatera aria-pressed i paletten vid load
+            const palette = document.querySelector('.palette');
+            function syncPalettePressed() {
+                if (!palette) return;
+                const current = document.body.dataset.scheme;
+                palette.querySelectorAll('[data-scheme]').forEach(b => {
+                    b.setAttribute('aria-pressed', b.dataset.scheme === current ? 'true' : 'false');
+                });
+            }
+            syncPalettePressed();
+
+            // 3) Lyssna på klick i paletten
+            if (palette) {
+                palette.addEventListener('click', (e) => {
+                    const btn = e.target.closest('[data-scheme]');
+                    if (!btn) return;
+                    const scheme = btn.dataset.scheme;
+                    document.body.dataset.scheme = scheme;
+                    localStorage.setItem(SCHEME_KEY, scheme);
+                    syncPalettePressed();
+                });
+            }
+
+            // Mobile menu toggle
+            const burger = document.getElementById('burger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (burger && mobileMenu) {
+                burger.addEventListener('click', () => {
+                    const open = mobileMenu.classList.toggle('show');
+                    burger.setAttribute('aria-expanded', String(open));
+                });
+            }
+
+            // Scrollspy: highlight active nav + side menu + bottom nav
+            const sections = Array.from(document.querySelectorAll('main section'));
+            const topLinks = Array.from(document.querySelectorAll('.nav__link'));
+            const sideLinks = Array.from(document.querySelectorAll('.side a'));
+            const bottomLinks = Array.from(document.querySelectorAll('.bottom-nav a'));
+
+            const setActive = (id) => {
+                [...topLinks, ...sideLinks, ...bottomLinks].forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + id));
+            };
+
+            if (sections.length) {
+                const observer = new IntersectionObserver((entries) => {
+                    const visible = entries.filter(e => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+                    if (visible) setActive(visible.target.id);
+                }, { rootMargin: '-40% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] });
+
+                sections.forEach(s => observer.observe(s));
+            }
+
+            // Smooth anchor scroll (respektera reduced motion)
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            document.addEventListener('click', (e) => {
+                const a = e.target.closest('a[href^="#"]');
+                if (!a) return;
+
+                const id = a.getAttribute('href').slice(1);
+                const el = document.getElementById(id);
+                if (!el) return;
+
+                e.preventDefault();
+                el.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
+
+                // Stäng mobilmenyn om den är öppen (.show)
+                if (mobileMenu && mobileMenu.classList.contains('show')) {
+                    mobileMenu.classList.remove('show');
+                    if (burger) burger.setAttribute('aria-expanded', 'false');
+                }
+            }, { passive: false });
+
+            // Apply underline class only for underline/minimal/gradient themes
+            function syncUnderlineClass() {
+                const isUnderline = document.body.classList.contains('theme-underline') || document.body.classList.contains('theme-minimal') || document.body.classList.contains('theme-gradient');
+                document.querySelectorAll('.nav__link').forEach(a => a.classList.toggle('nav__link--underline', isUnderline));
+            }
+            const mo = new MutationObserver(syncUnderlineClass);
+            mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+            syncUnderlineClass();
+
+            // Keep bottom nav state in sync when Theme 10 is active
+            function syncBottomActive() {
+                const isBottom = document.body.classList.contains('theme-bottom');
+                const bn = document.querySelector('.bottom-nav');
+                if (bn) bn.setAttribute('aria-hidden', isBottom ? 'false' : 'true');
+            }
+            syncBottomActive();
+
+            // Öka glass-opacitet på scroll för kontrast
+            const onScroll = () => {
+                if (window.scrollY > 8) {
+                    document.body.classList.add('scrolled');
+                } else {
+                    document.body.classList.remove('scrolled');
+                }
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+        })();
+    </script>
+
+</body>
+
+</html>
