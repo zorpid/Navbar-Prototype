@@ -685,6 +685,17 @@
             --brand-2: #16a34a;
             --grad-accent: #065f46;
         }
+        body[data-scheme="black"] {
+  --scheme-nav-bg: #000000;
+  --scheme-nav-link: #f9fafb;          /* nästan vit för text */
+  --scheme-nav-link-hover: #ffffff;
+  --scheme-nav-link-active: #22c55e;   /* accent (grön) */
+  --scheme-cta-bg: #22c55e;            /* grön knapp */
+  --scheme-cta-text: #000000;          /* svart text */
+  --brand: #22c55e;
+  --brand-2: #16a34a;
+}
+
 
 
 
@@ -801,6 +812,9 @@
             background: #065f46;
             /* djup mörkgrön */
         }
+.swatch--black {
+  background: #000000;
+}
 
 
 
@@ -977,6 +991,8 @@
             title="Ljusgrön">8</button>
         <button class="swatch swatch--darkgreen" data-scheme="darkgreen" aria-pressed="false"
             title="Mörkgrön">9</button>
+            <button class="swatch swatch--black" data-scheme="black" aria-pressed="false" title="Svart">10</button>
+
 
 
     </div>
