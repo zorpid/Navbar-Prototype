@@ -38,7 +38,7 @@
         }
 
         /* THEME 1: Underline (default) */
-        body.theme-underline {}
+
 
         /* THEME 2: Classic Solid */
         body.theme-classic {
@@ -464,15 +464,24 @@
         }
 
         /* HERO SLIDER */
-        .slider {
-            position: relative;
-            width: 100%;
-            height: 340px;
-            overflow: hidden;
-            background: #000;
-            /* fallback */
-            isolation: isolate;
-        }
+        /* Nollställ figure-marginalen */
+.slide { 
+  position: relative;
+  min-width: 100%;
+  height: 100%;
+  margin: 0;            /* <-- viktig rad */
+}
+
+ .slider {
+  position: relative;
+  width: 100%;
+  height: 340px;
+  overflow: hidden;
+  background: #000;
+  isolation: isolate;
+  border-radius: 18px;   /* matcha dina cards */
+}
+
 
         @media (max-width: 1024px) {
             .slider {
@@ -529,7 +538,10 @@
             display: grid;
             place-items: center;
             cursor: pointer;
-            z-index: 2;
+            z-index: 20;
+            /* <-- högre än slides */
+            pointer-events: auto;
+            /* <-- säkerställ klickbar */
         }
 
         .slider__ctrl:hover {
@@ -543,6 +555,12 @@
         .slider__ctrl--next {
             right: 12px;
         }
+
+        /* Lägg detta till för att vara tydlig med lagren */
+        .slides {
+            z-index: 1;
+        }
+
 
         /* Dots */
         .slider__dots {
@@ -1340,17 +1358,25 @@
                 slider.addEventListener('focusout', start);
 
                 // Touch/drag (simple swipe)
+                // Touch/drag (simple swipe) – hoppa över om man klickar på kontroller/dots
                 slider.addEventListener('pointerdown', (e) => {
-                    isDragging = true; startX = e.clientX; currentX = startX;
+                    if (e.target.closest('.slider__ctrl') || e.target.closest('.slider__dot')) {
+                        return; // låt knapparna få klick-händelsen ostört
+                    }
+                    isDragging = true;
+                    startX = e.clientX;
+                    currentX = startX;
                     slider.setPointerCapture(e.pointerId);
                     stop();
                 });
+
                 slider.addEventListener('pointermove', (e) => {
                     if (!isDragging) return;
                     currentX = e.clientX;
                     const dx = currentX - startX;
                     track.style.transform = `translateX(calc(${-index * 100}% + ${dx}px))`;
                 });
+
                 slider.addEventListener('pointerup', (e) => {
                     if (!isDragging) return;
                     isDragging = false;
@@ -1361,6 +1387,7 @@
                     else update();
                     start();
                 });
+
 
                 // Init
                 update();
