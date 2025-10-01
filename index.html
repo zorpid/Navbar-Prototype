@@ -463,10 +463,132 @@
             overflow: hidden;
         }
 
-        .card__hero {
+        /* HERO SLIDER */
+        .slider {
+            position: relative;
+            width: 100%;
             height: 340px;
-            background: var(--hero-gradient), url('https://images.unsplash.com/photo-1496483648148-47c686dc86a8?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+            overflow: hidden;
+            background: #000;
+            /* fallback */
+            isolation: isolate;
         }
+
+        @media (max-width: 1024px) {
+            .slider {
+                height: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slider {
+                height: 220px;
+            }
+        }
+
+        .slides {
+            display: flex;
+            height: 100%;
+            transition: transform .6s ease;
+            will-change: transform;
+        }
+
+        .slide {
+            position: relative;
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: brightness(0.85);
+        }
+
+        .slide::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--hero-gradient);
+            pointer-events: none;
+        }
+
+        /* Prev/Next */
+        .slider__ctrl {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .25);
+            background: rgba(0, 0, 0, .25);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .slider__ctrl:hover {
+            background: rgba(0, 0, 0, .4);
+        }
+
+        .slider__ctrl--prev {
+            left: 12px;
+        }
+
+        .slider__ctrl--next {
+            right: 12px;
+        }
+
+        /* Dots */
+        .slider__dots {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            z-index: 2;
+        }
+
+        .slider__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .5);
+            border: none;
+            cursor: pointer;
+        }
+
+        .slider__dot[aria-pressed="true"] {
+            background: #fff;
+            width: 22px;
+            border-radius: 999px;
+        }
+
+        /* Pause on hover cue (optional) */
+        .slider:hover .slider__hint {
+            opacity: 1;
+        }
+
+        .slider__hint {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            color: rgba(255, 255, 255, .85);
+            font-size: 12px;
+            background: rgba(0, 0, 0, .3);
+            padding: 6px 8px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
 
         .card__body {
             padding: 24px;
@@ -685,16 +807,21 @@
             --brand-2: #16a34a;
             --grad-accent: #065f46;
         }
+
         body[data-scheme="black"] {
-  --scheme-nav-bg: #000000;
-  --scheme-nav-link: #f9fafb;          /* nästan vit för text */
-  --scheme-nav-link-hover: #ffffff;
-  --scheme-nav-link-active: #22c55e;   /* accent (grön) */
-  --scheme-cta-bg: #22c55e;            /* grön knapp */
-  --scheme-cta-text: #000000;          /* svart text */
-  --brand: #22c55e;
-  --brand-2: #16a34a;
-}
+            --scheme-nav-bg: #000000;
+            --scheme-nav-link: #f9fafb;
+            /* nästan vit för text */
+            --scheme-nav-link-hover: #ffffff;
+            --scheme-nav-link-active: #22c55e;
+            /* accent (grön) */
+            --scheme-cta-bg: #22c55e;
+            /* grön knapp */
+            --scheme-cta-text: #000000;
+            /* svart text */
+            --brand: #22c55e;
+            --brand-2: #16a34a;
+        }
 
 
 
@@ -812,9 +939,10 @@
             background: #065f46;
             /* djup mörkgrön */
         }
-.swatch--black {
-  background: #000000;
-}
+
+        .swatch--black {
+            background: #000000;
+        }
 
 
 
@@ -847,8 +975,8 @@
                     <a class="nav__link nav__link--underline" href="#leverans">Leverans</a>
                     <a class="nav__link nav__link--underline" href="#kontakt">Kontakt</a>
                     <a class="nav__cta" href="#kundvagn" aria-label="Kundvagn">
-  <i class="fas fa-shopping-cart"></i>
-</a>
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
 
                 </div>
 
@@ -894,16 +1022,33 @@
         </aside>
 
         <div class="content">
-            <section id="hem" class="card">
-                <div class="card__hero"></div>
-                <div class="card__body">
-                    <h1 style="margin:0 0 8px">Tracking the elements of nature</h1>
-                    <p style="color:var(--muted); max-width:65ch">Behåll bildstrukturen från nuvarande sida men med
-                        fräschare färger. Här kan vi lägga en hero med CTA som pekar till vår Omnitrack-butik eller
-                        produktlistor.</p>
-                    <p><a class="btn" href="#produkter">Omnitrack shop ↗</a></p>
+            <div class="slider" data-autoplay="true" data-interval="5000">
+                <div class="slides">
+                    <figure class="slide">
+                        <img src="https://images.unsplash.com/photo-1496483648148-47c686dc86a8?q=80&w=1600&auto=format&fit=crop"
+                            alt="Närbild på växtlighet i gryningsljus">
+                    </figure>
+                    <figure class="slide">
+                        <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1600&auto=format&fit=crop"
+                            alt="Skogssiluett och dimma över trädkronor">
+                    </figure>
+                    <figure class="slide">
+                        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop"
+                            alt="Vågig vattenspegel med solglitter">
+                    </figure>
                 </div>
-            </section>
+
+                <button class="slider__ctrl slider__ctrl--prev" type="button" aria-label="Föregående bild">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="slider__ctrl slider__ctrl--next" type="button" aria-label="Nästa bild">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+
+                <div class="slider__dots" aria-label="Bildväljare"></div>
+                <div class="slider__hint">Paus vid hover</div>
+            </div>
+
 
             <section id="produkter" class="card" style="margin-top:24px">
                 <div class="card__body">
@@ -991,7 +1136,7 @@
             title="Ljusgrön">8</button>
         <button class="swatch swatch--darkgreen" data-scheme="darkgreen" aria-pressed="false"
             title="Mörkgrön">9</button>
-            <button class="swatch swatch--black" data-scheme="black" aria-pressed="false" title="Svart">10</button>
+        <button class="swatch swatch--black" data-scheme="black" aria-pressed="false" title="Svart">10</button>
 
 
 
@@ -1126,6 +1271,103 @@
             };
             window.addEventListener('scroll', onScroll, { passive: true });
             onScroll();
+            /* ==== HERO SLIDER LOGIC ==== */
+            const slider = document.querySelector('.slider');
+            if (slider) {
+                const track = slider.querySelector('.slides');
+                const slides = Array.from(slider.querySelectorAll('.slide'));
+                const prevBtn = slider.querySelector('.slider__ctrl--prev');
+                const nextBtn = slider.querySelector('.slider__ctrl--next');
+                const dotsWrap = slider.querySelector('.slider__dots');
+
+                let index = 0;
+                let autoplay = slider.dataset.autoplay === 'true';
+                let interval = parseInt(slider.dataset.interval || '5000', 10);
+                let timer = null;
+                let isHover = false;
+                let startX = 0, currentX = 0, isDragging = false;
+
+                // Build dots
+                slides.forEach((_, i) => {
+                    const b = document.createElement('button');
+                    b.className = 'slider__dot';
+                    b.type = 'button';
+                    b.setAttribute('aria-label', `Gå till bild ${i + 1}`);
+                    b.addEventListener('click', () => goTo(i));
+                    dotsWrap.appendChild(b);
+                });
+
+                function update() {
+                    track.style.transform = `translateX(-${index * 100}%)`;
+                    dotsWrap.querySelectorAll('.slider__dot').forEach((d, i) => {
+                        d.setAttribute('aria-pressed', i === index ? 'true' : 'false');
+                    });
+                }
+
+                function goTo(i) {
+                    index = (i + slides.length) % slides.length;
+                    update();
+                    restart();
+                }
+
+                function next() { goTo(index + 1); }
+                function prev() { goTo(index - 1); }
+
+                // Controls
+                if (nextBtn) nextBtn.addEventListener('click', next);
+                if (prevBtn) prevBtn.addEventListener('click', prev);
+
+                // Keyboard
+                slider.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight') next();
+                    if (e.key === 'ArrowLeft') prev();
+                });
+                slider.setAttribute('tabindex', '0'); // focusable for keys
+
+                // Autoplay (pause on hover/focus)
+                function start() {
+                    if (autoplay && !isHover) {
+                        stop();
+                        timer = setInterval(next, interval);
+                    }
+                }
+                function stop() { if (timer) clearInterval(timer); timer = null; }
+                function restart() { stop(); start(); }
+
+                slider.addEventListener('mouseenter', () => { isHover = true; stop(); });
+                slider.addEventListener('mouseleave', () => { isHover = false; start(); });
+                slider.addEventListener('focusin', stop);
+                slider.addEventListener('focusout', start);
+
+                // Touch/drag (simple swipe)
+                slider.addEventListener('pointerdown', (e) => {
+                    isDragging = true; startX = e.clientX; currentX = startX;
+                    slider.setPointerCapture(e.pointerId);
+                    stop();
+                });
+                slider.addEventListener('pointermove', (e) => {
+                    if (!isDragging) return;
+                    currentX = e.clientX;
+                    const dx = currentX - startX;
+                    track.style.transform = `translateX(calc(${-index * 100}% + ${dx}px))`;
+                });
+                slider.addEventListener('pointerup', (e) => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    const dx = e.clientX - startX;
+                    const threshold = slider.clientWidth * 0.15;
+                    if (dx > threshold) prev();
+                    else if (dx < -threshold) next();
+                    else update();
+                    start();
+                });
+
+                // Init
+                update();
+                start();
+            }
+
+
         })();
     </script>
 
