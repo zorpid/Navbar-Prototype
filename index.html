@@ -465,22 +465,24 @@
 
         /* HERO SLIDER */
         /* Nollställ figure-marginalen */
-.slide { 
-  position: relative;
-  min-width: 100%;
-  height: 100%;
-  margin: 0;            /* <-- viktig rad */
-}
+        .slide {
+            position: relative;
+            min-width: 100%;
+            height: 100%;
+            margin: 0;
+            /* <-- viktig rad */
+        }
 
- .slider {
-  position: relative;
-  width: 100%;
-  height: 340px;
-  overflow: hidden;
-  background: #000;
-  isolation: isolate;
-  border-radius: 18px;   /* matcha dina cards */
-}
+        .slider {
+            position: relative;
+            width: 100%;
+            height: 340px;
+            overflow: hidden;
+            background: #000;
+            isolation: isolate;
+            border-radius: 18px;
+            /* matcha dina cards */
+        }
 
 
         @media (max-width: 1024px) {
@@ -969,6 +971,493 @@
         body.scrolled.theme-glass {
             --nav-bg: rgba(15, 23, 42, .65);
         }
+
+        .products-grid {
+            display: grid;
+            gap: 20px;
+            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
+
+        .product-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .product-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 6px;
+            color: var(--text);
+        }
+
+        .product-desc {
+            font-size: 14px;
+            color: var(--muted);
+            flex-grow: 1;
+            margin: 0 0 12px;
+        }
+
+        .product-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--brand);
+        }
+
+        /* ===== PROMO-KORT ovanför produktgriden ===== */
+        .promos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin: 24px 0 12px;
+        }
+
+        .promo-card {
+            background: #eef2f1;
+            /* ljus, lik din referens */
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            /* text : bild */
+            align-items: center;
+            min-height: 320px;
+        }
+
+        .promo-card--reverse {
+            /* andra kortet med bild till vänster */
+            grid-template-columns: 1fr 1.3fr;
+        }
+
+        .promo-body {
+            padding: 24px clamp(18px, 2.5vw, 32px);
+        }
+
+        .promo-pre {
+            margin: 0 0 6px;
+            color: #b91c1c;
+            /* röd som i exemplet */
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .promo-title {
+            margin: 0 0 8px;
+            font-size: clamp(22px, 2.4vw, 34px);
+            line-height: 1.15;
+            font-weight: 900;
+            color: var(--text);
+        }
+
+        .promo-text {
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .promo-media {
+            background: #fff;
+            border-left: 1px solid #e5e7eb;
+            height: 100%;
+            display: grid;
+            place-items: center;
+            padding: clamp(12px, 2vw, 24px);
+        }
+
+        .promo-card--reverse .promo-media {
+            /* när bilden ligger till vänster */
+            border-left: 0;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .promo-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* behåll proportioner som dina exempel */
+        }
+
+        /* Hover: lätt lyft */
+        .promo-card {
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+
+        .promo-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
+        }
+
+        /* Responsiv */
+        @media (max-width: 1024px) {
+
+            .promo-card,
+            .promo-card--reverse {
+                grid-template-columns: 1fr;
+                /* stapla text över bild på iPad/mobil */
+            }
+
+            .promo-media {
+                border-left: 0;
+                border-top: 1px solid #e5e7eb;
+                height: 260px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .promos {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+        }
+
+        /* ====== Nivåvippor – lockande sektioner (nv-*) ====== */
+        .nv-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* HERO */
+        .nv-hero {
+            border-radius: 18px;
+            overflow: hidden;
+            position: relative;
+            background: #0b1720;
+            min-height: 360px;
+        }
+
+        .nv-hero__img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.05) brightness(.9);
+        }
+
+        .nv-hero__shade {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(0, 0, 0, .55), rgba(0, 0, 0, .25));
+        }
+
+        .nv-hero__body {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            padding: clamp(20px, 5vw, 40px);
+            display: grid;
+            gap: 12px;
+            max-width: 720px;
+        }
+
+        .nv-hero h1 {
+            margin: 0;
+            font-size: clamp(26px, 3.2vw, 42px);
+            line-height: 1.15;
+            font-weight: 900;
+        }
+
+        .nv-hero p {
+            margin: 0;
+            color: #e5f7ef;
+        }
+
+        .nv-cta {
+            display: inline-flex;
+            gap: 10px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nv-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-weight: 800;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .nv-btn--primary {
+            background: var(--brand);
+            color: #fff;
+        }
+
+        .nv-btn--ghost {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+            border-color: rgba(255, 255, 255, .25);
+        }
+
+        /* PROMO DUO */
+        .nv-promos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .nv-promo {
+            background: #f2f6f4;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .nv-promo--reverse {
+            grid-template-columns: 1fr 1.1fr;
+        }
+
+        .nv-promo__body {
+            padding: 22px;
+        }
+
+        .nv-pre {
+            color: #b91c1c;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            font-weight: 800;
+            margin: 0 0 6px;
+        }
+
+        .nv-title {
+            margin: 0 0 8px;
+            font-size: clamp(20px, 2.2vw, 30px);
+            font-weight: 900;
+        }
+
+        .nv-sub {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .nv-promo__media {
+            background: #fff;
+            border-left: 1px solid #e5e7eb;
+            height: 100%;
+            display: grid;
+            place-items: center;
+            padding: 16px;
+        }
+
+        .nv-promo--reverse .nv-promo__media {
+            border-left: 0;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .nv-promo__img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* HIGHLIGHTS (3 snabba val) */
+        .nv-highlights {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .nv-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .04);
+            display: grid;
+            gap: 10px;
+        }
+
+        .nv-chip {
+            display: inline-block;
+            background: #e9f2ff;
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .nv-card h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .nv-card p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .nv-card .nv-btn {
+            margin-top: 6px;
+            padding: 10px 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nv-promos {
+                grid-template-columns: 1fr;
+            }
+
+            .nv-promo,
+            .nv-promo--reverse {
+                grid-template-columns: 1fr;
+            }
+
+            .nv-promo__media {
+                border: 0;
+                border-top: 1px solid #e5e7eb;
+                height: 240px;
+            }
+
+            .nv-highlights {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .nv-hero {
+                min-height: 300px;
+            }
+
+            .nv-highlights {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== Promos i stil med "löjrom/lax" (kp-*) ===== */
+        .kp-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .kp-promos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin: 24px 0;
+        }
+
+        .kp-card {
+            background: #eef2f1;
+            /* ljusgrå-grön bakgrund som i exemplet */
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 18px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .kp-media {
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+            aspect-ratio: 16 / 9;
+            /* stabil höjd för bilden */
+        }
+
+        .kp-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* som på fisksidan */
+        }
+
+        .kp-pre {
+            margin: 8px 0 4px;
+            color: #b91c1c;
+            /* röd pre-rubrik */
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: .4px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .kp-title {
+            margin: 0;
+            font-weight: 900;
+            text-transform: uppercase;
+            /* caps som i exemplet */
+            text-align: center;
+            font-size: clamp(18px, 2vw, 24px);
+            color: var(--text);
+        }
+
+        .kp-text {
+            margin: 0;
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .kp-cta {
+            display: flex;
+            justify-content: center;
+            margin-top: 6px;
+        }
+
+        .kp-btn {
+            background: var(--brand);
+            color: #fff;
+            border: 0;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .kp-btn:hover {
+            filter: brightness(.95);
+        }
+
+        /* Responsivt */
+        @media (max-width: 900px) {
+            .kp-promos {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -1067,37 +1556,142 @@
                 <div class="slider__hint">Paus vid hover</div>
             </div>
 
+        <!--     <section class="nv-wrap" style="margin-top:24px">
+                <div class="nv-hero">
+                    <img class="nv-hero__img"
+                        src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop"
+                        alt="">
+                    <div class="nv-hero__shade"></div>
+                    <div class="nv-hero__body">
+                        <h1>Undvik driftstopp – välj rätt nivåvippa</h1>
+                        <p>Pålitlig nivåkontroll för brunnar, tankar och processer. Tål smutsiga miljöer och är enkel
+                            att installera.</p>
+                        <div class="nv-cta">
+                            <a href="#produkter" class="nv-btn nv-btn--primary">Se vårt sortiment</a>
+                            <a href="#kontakt" class="nv-btn nv-btn--ghost">Kontakta oss</a>
+                        </div>
+                    </div>
+                </div>
+            </section> -->
+
+
+
+            <section class="kp-wrap">
+                <div class="kp-promos">
+                    <!-- Kort 1 -->
+                    <article class="kp-card">
+                        <div class="kp-media" aria-hidden="true">
+                            <!-- BYT BILD HÄR -->
+                            <img src="./images/hm.jpg" alt="">
+                        </div>
+                        <p class="kp-pre">För tuffa miljöer</p>
+                        <h3 class="kp-title">Vippor för pumpgropar & brunnar</h3>
+                        <p class="kp-text">Stabila signaler även i smutsigt vatten. Snabb montering med vikt/fästen.</p>
+                        <div class="kp-cta">
+                            <a href="#produkter" class="kp-btn">Utforska</a>
+                        </div>
+                    </article>
+
+                    <!-- Kort 2 -->
+                    <article class="kp-card">
+                        <div class="kp-media" aria-hidden="true">
+                            <!-- BYT BILD HÄR -->
+                            <img src="./images/ciggar.jpg" alt="">
+                        </div>
+                        <p class="kp-pre">Kemikalietåliga alternativ</p>
+                        <h3 class="kp-title">För process & aggressiva medier</h3>
+                        <p class="kp-text">Material och kablar som tål syror/baser. Driftsäkerhet i industriella
+                            miljöer.</p>
+                        <div class="kp-cta">
+                            <a href="#produkter" class="kp-btn">Se varianter</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+
+
+
+            <section class="nv-wrap" style="margin-top:18px">
+                <div class="nv-highlights">
+                    <article class="nv-card">
+                        <span class="nv-chip">Standard</span>
+                        <h3>Pumpar & larm</h3>
+                        <p>Robusta vippor för VA, brunnar och tankar. IP68 och snabbt i drift.</p>
+                        <a href="#produkter" class="nv-btn nv-btn--primary">Välj standard</a>
+                    </article>
+
+                    <article class="nv-card">
+                        <span class="nv-chip">Kemikalietåliga</span>
+                        <h3>Process & industri</h3>
+                        <p>Vippor för tuffa medier – materialval för hög resistens.</p>
+                        <a href="#produkter" class="nv-btn nv-btn--primary">Se process</a>
+                    </article>
+
+                    <article class="nv-card">
+                        <span class="nv-chip">ATEX / EX</span>
+                        <h3>Explosionsskyddade</h3>
+                        <p>Alternativ för zonklassade miljöer med dokumentation.</p>
+                        <a href="#produkter" class="nv-btn nv-btn--primary">Se EX-modeller</a>
+                    </article>
+                </div>
+            </section>
+
 
             <section id="produkter" class="card" style="margin-top:24px">
                 <div class="card__body">
                     <h2>Produkter</h2>
-                    <p style="color:var(--muted)">Exempel-länkar/brickor — klick i navbaren scrollar hit. Lägg in grid
-                        av produkter eller kort.</p>
+                    <p style="color:var(--muted)">Här är exempel på produkter. Klick i navbaren scrollar hit.</p>
+
+                    <div class="products-grid">
+                        <!-- Produkt 1 -->
+                        <div class="product-card">
+                            <img src="./images/hm.jpg" alt="Produkt 1" class="product-img">
+                            <div class="product-body">
+                                <h3 class="product-title">Produktnamn 1</h3>
+                                <p class="product-desc">Kort beskrivning av produkten.</p>
+                                <div class="product-footer">
+                                    <span class="product-price">299 kr</span>
+                                    <button class="btn">Lägg i varukorg</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Produkt 2 -->
+                        <div class="product-card">
+                            <img src="./images/hm.jpg" alt="Produkt 2" class="product-img">
+                            <div class="product-body">
+                                <h3 class="product-title">Produktnamn 2</h3>
+                                <p class="product-desc">Kort beskrivning av produkten.</p>
+                                <div class="product-footer">
+                                    <span class="product-price">499 kr</span>
+                                    <button class="btn">Lägg i varukorg</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Produkt 3 -->
+                        <div class="product-card">
+                            <img src="./images/hm.jpg" alt="Produkt 3" class="product-img">
+                            <div class="product-body">
+                                <h3 class="product-title">Produktnamn 3</h3>
+                                <p class="product-desc">Kort beskrivning av produkten.</p>
+                                <div class="product-footer">
+                                    <span class="product-price">699 kr</span>
+                                    <button class="btn">Lägg i varukorg</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <section id="om-oss" class="card" style="margin-top:24px">
-                <div class="card__body">
-                    <h2>Om oss</h2>
-                    <p style="color:var(--muted)">Kort text om företaget. Den här sektionen hjälper klienten känna igen
-                        tonen från original.</p>
-                </div>
-            </section>
 
-            <section id="sponsorer" class="card" style="margin-top:24px">
-                <div class="card__body">
-                    <h2>Sponsorer</h2>
-                    <p style="color:var(--muted)">Listning av samarbeten/sponsorer.</p>
-                </div>
-            </section>
 
-            <section id="leverans" class="card" style="margin-top:24px">
-                <div class="card__body">
-                    <h2>Leverans</h2>
-                    <p style="color:var(--muted)">Information om leveransvillkor.</p>
-                </div>
-            </section>
 
+
+
+<!-- 
             <section id="kontakt" class="card" style="margin-top:24px">
                 <div class="card__body">
                     <h2>Kontakt</h2>
@@ -1117,14 +1711,9 @@
                         <button class="btn" type="button" style="grid-column:1 / -1; width:max-content">Skicka</button>
                     </form>
                 </div>
-            </section>
+            </section> -->
 
-            <section id="stadgar" class="card" style="margin:24px 0 80px">
-                <div class="card__body">
-                    <h2>Stadgar</h2>
-                    <p style="color:var(--muted)">Eventuellt innehåll kopplat till föreningens stadgar.</p>
-                </div>
-            </section>
+
         </div>
     </main>
 
